@@ -1,37 +1,37 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestBank {
 
 
-    @BeforeAll
-    public void setValue() {
-        Account[] accountmentsTest = new Account[]{
-                new SavingsAccount(1_100_000),  //  Сберегательный счет
-                new CreditAccount(-300_000),  //  Кредитный счет
-                new CheckingAccount(900_000) //  Расчетный счет
-        };
-    }
 
 
     @Test
     public void testUpZero() {
+
         Account[] accountmentsTest = new Account[]{
                 new SavingsAccount(1_100_000),  //  Сберегательный счет
                 new CreditAccount(-300_000),  //  Кредитный счет
                 new CheckingAccount(900_000) //  Расчетный счет
         };
         //Assert.assertTrue(accountmentsTest[0] >= 0); ?
-        Assertions.assertTrue(accountmentsTest[0] >= 0);
-        Assertions.assertTrue(accountmentsTest[2] >= 0);
+        Assertions.assertTrue(accountmentsTest[1].balance <= 0);
+//        Assertions.assertTrue(accountmentsTest[2] >= 0);
     }
 
     @Test
     public void testDownZero() {
+        Account[] accountmentsTest = new Account[]{
+                new SavingsAccount(1_000_000),  //  Сберегательный счет
+                new CreditAccount(-300_000),  //  Кредитный счет
+                new CheckingAccount(900_000) //  Расчетный счет
+        };
 
         //Assert.assertTrue(accountmentsTest1[0] >= 0); ?
-        Assertions.assertTrue(accountmentsTest[1] <= 0);
+        Assertions.assertTrue(accountmentsTest[0].balance >= 0);
+        Assertions.assertTrue(accountmentsTest[2].balance >= 0);
     }
 
 
@@ -44,20 +44,43 @@ public class TestBank {
                 new CheckingAccount(900_000) //  Расчетный счет
         };
 
+
         Account[] accountmentsResult = new Account[]{
                 new SavingsAccount(800_000),  //  Сберегательный счет
                 new CreditAccount(-300_000),  //  Кредитный счет
                 new CheckingAccount(1_100_000) //  Расчетный счет
         };
 
+        accountmentsTest[0].transfer(accountmentsTest[2], 200_000);
 
 
 
-        // when:
+        Assertions.assertEquals(accountmentsResult[0].balance,accountmentsTest[0].balance);
+        Assertions.assertEquals(accountmentsResult[2].balance,accountmentsTest[2].balance);
+    }
+
+    @Test
+    public void testSavingsAccountToCheckingAccount_success2() {
+        // given:
+        Account[] accountmentsTest = new Account[]{
+                new SavingsAccount(1_000_000),  //  Сберегательный счет
+                new CreditAccount(-300_000),  //  Кредитный счет
+                new CheckingAccount(900_000) //  Расчетный счет
+        };
 
 
-        // then:
-        //Assertions.***;
+        Account[] accountmentsResult = new Account[]{
+                new SavingsAccount(1_000_000),  //  Сберегательный счет
+                new CreditAccount(-300_000),  //  Кредитный счет
+                new CheckingAccount(900_000) //  Расчетный счет
+        };
+
+        accountmentsTest[0].transfer(accountmentsTest[2], 1_200_000);
+
+
+
+        Assertions.assertEquals(accountmentsResult[0].balance,accountmentsTest[0].balance);
+        Assertions.assertEquals(accountmentsResult[2].balance,accountmentsTest[2].balance);
     }
 
 }
